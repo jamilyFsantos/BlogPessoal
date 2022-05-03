@@ -1,13 +1,18 @@
 package com.generation.blogpessoal.model;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-//import javax.persistence.Temporal;
-//import javax.persistence.TemporalType;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.NotNull;
 
 @Entity
@@ -19,21 +24,26 @@ public class Postagem {
   
 // equivalente ao auto increment no mysql
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  public Long id;
+  private Long id;
   
   // define que o campo é obrigatório
   @NotNull
   
  // define um numero minimo e maximo de caracteres no campo 
   @Size(min = 5, max = 100, message="O campo deve ter no minimo 5 caracteres, e no maximo 100 caracteres")
-  public String titulo;
+  private String titulo;
   
   @NotNull
   @Size(min = 5, max = 500)
-  public String texto;
+  private String texto;
   
-  //@Temporal(TemporalType.TIMESTAMP)
- // private Date data = new java.sql.Date(System.currentTimeMillis());
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date data = new java.sql.Date(System.currentTimeMillis());
+  
+  //para fazer o relacionamento 
+  @ManyToOne
+  @JsonIgnoreProperties("postagem")
+  private Tema tema;
   
 
 public Long getId() {
@@ -60,6 +70,13 @@ public void setTexto(String texto) {
 	this.texto = texto;
 }
   
-  
+
+public Tema getTema() {
+	return tema;
+}
+
+public void setTema(Tema tema) {
+	this.tema = tema;
+}
   
 }
