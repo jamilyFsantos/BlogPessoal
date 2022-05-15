@@ -41,6 +41,26 @@ public class UsuarioService {
 
 		return encoder.encode(senha);
 	};
+	
+	
+	//ATUALIZAR E A SENHA AINDA FICAR CRIPTOGRAFADA
+	/*public Optional<Usuario> atualizarUsuario(Usuario usuario) {
+		
+		if (repository.findById(usuario.getId()).isPresent()) {
+			return Optional.empty();
+
+		usuario.setSenha(criptografarSenha(usuario.getSenha()));
+
+		return Optional.of(repository.save(usuario));
+	   }
+	};
+
+	private String criptografarSenha(String senha) {
+
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+		return encoder.encode(senha);
+	};*/
 
 	public Optional<UsuarioLogin> autenticaUsuario(Optional<UsuarioLogin> usuarioLogin) {
 		Optional<Usuario> usuario = repository.findByUsuario(usuarioLogin.get().getUsuario());

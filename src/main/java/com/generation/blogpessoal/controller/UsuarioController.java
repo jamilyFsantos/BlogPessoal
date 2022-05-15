@@ -58,6 +58,21 @@ public class UsuarioController {
 
 	}
 
+	//PARA ATUALIZAR E A SENHA AINDA FICAR CRIPTOGRAFADA
+	/*@PutMapping()
+	public ResponseEntity<Usuario> putUsuario(@Valid @RequestBody Usuario usuario) {
+
+		return usuarioService.atualizarUsuario(usuario)
+				.map(resposta -> ResponseEntity.status(HttpStatus.CREATED).body(resposta))
+				.orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
+	
+	}*/
+	
+	
+	
+	
+	
+	//PARA ATUALIZAR, MAS A SENHA NÃO VAI FICAR CRIPTOGRAFADA
 	@PutMapping("/atualizar")
 	public ResponseEntity<Usuario> put (@RequestBody Usuario usuario){
 		return ResponseEntity.status(HttpStatus.OK).body(usuarioRepository.save(usuario));
