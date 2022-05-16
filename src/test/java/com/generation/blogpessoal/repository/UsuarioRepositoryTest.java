@@ -32,7 +32,7 @@ public class UsuarioRepositoryTest {
 	//para colocar um usuario novo
 	@BeforeAll
 	void start() {
-		repository.save(new Usuario(0L, "Maiar", "isadora@gmail.com","51 e pinga","https://i.imgur.com/FETvs2O.jpg"));
+		repository.save(new Usuario(0L, "Jamily", "jamily@gmail.com","1234","https://i.imgur.com/FETvs2O.jpg"));
 		
 		repository.save(new Usuario(0L, "Michael", "michaeltrimundial@gmail.com","nunca fui rebaixado","https://i.imgur.com/FETvs2O.jpg"));
 		

@@ -7,8 +7,10 @@ import java.util.Optional;
 
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.generation.blogpessoal.model.Usuario;
 import com.generation.blogpessoal.model.UsuarioLogin;
@@ -33,9 +35,10 @@ public class UsuarioService {
 		// e por ultimo, salvo o usuario com a senha já criptografada no banco de dados
 		return Optional.of(repository.save(usuario));
 	};
+	
 
 	// função para criptografar a senha digitada pelo usuario
-	private String criptografarSenha(String senha) {
+	public String criptografarSenha(String senha) {
 
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -47,20 +50,29 @@ public class UsuarioService {
 	/*public Optional<Usuario> atualizarUsuario(Usuario usuario) {
 		
 		if (repository.findById(usuario.getId()).isPresent()) {
+			
+			
+			Optional<Usuario> buscaUsuario = repository.findByUsuario(usuario.getUsuario());
+
+		
+			if ( (buscaUsuario.isPresent()) && ( buscaUsuario.get().getId() != usuario.getId())) {
+			
+				throw new ResponseStatusException(
+						HttpStatus.BAD_REQUEST, "Usuário já existe!", null);
+				
+					
+			usuario.setSenha(criptografarSenha(usuario.getSenha()));
+
+		return Optional.ofNullable(repository.save(usuario));
+		
+			}
+			
 			return Optional.empty();
-
-		usuario.setSenha(criptografarSenha(usuario.getSenha()));
-
-		return Optional.of(repository.save(usuario));
 	   }
-	};
-
-	private String criptografarSenha(String senha) {
-
-		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
-		return encoder.encode(senha);
 	};*/
+
+	
+
 
 	public Optional<UsuarioLogin> autenticaUsuario(Optional<UsuarioLogin> usuarioLogin) {
 		Optional<Usuario> usuario = repository.findByUsuario(usuarioLogin.get().getUsuario());
@@ -79,6 +91,8 @@ public class UsuarioService {
 
 		return Optional.empty();
 	}
+	
+	
 
 	private boolean compararSenhas(String senhaDigitada, String senhaBanco) {
 

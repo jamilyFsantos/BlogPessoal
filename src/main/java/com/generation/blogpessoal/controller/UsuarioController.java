@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,20 +64,25 @@ public class UsuarioController {
 	public ResponseEntity<Usuario> putUsuario(@Valid @RequestBody Usuario usuario) {
 
 		return usuarioService.atualizarUsuario(usuario)
-				.map(resposta -> ResponseEntity.status(HttpStatus.CREATED).body(resposta))
-				.orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
+				.map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
+				.orElse(ResponseEntity.status(HttpStatus.NOT_FUOND).build());
 	
 	}*/
 	
-	
+	//put do gabriel, atualiza e já criptografa 
+	@PutMapping("/atualizar")
+    public ResponseEntity<Usuario> put(@Valid @RequestBody Usuario usuario) {
+        usuario.setSenha(usuarioService.criptografarSenha(usuario.getSenha()));
+        return ResponseEntity.status(HttpStatus.OK).body(usuarioRepository.save(usuario));
+    }
 	
 	
 	
 	//PARA ATUALIZAR, MAS A SENHA NÃO VAI FICAR CRIPTOGRAFADA
-	@PutMapping("/atualizar")
+	/*@PutMapping("/atualizar")
 	public ResponseEntity<Usuario> put (@RequestBody Usuario usuario){
 		return ResponseEntity.status(HttpStatus.OK).body(usuarioRepository.save(usuario));
-	}
+	}*/
 	
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable Long id) {
